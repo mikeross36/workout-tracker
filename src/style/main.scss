@@ -1,117 +1,116 @@
 body {
-    background: #ffefba;
+  background: #ffefba;
+}
+
+.tracker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.workout {
+  font-size: 14px;
+  border-collapse: collapse;
+  width: 40rem;
+  margin: 0 auto;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+  & th {
+    padding: 1rem .75rem;
+    font-size: 1.3rem;
+    text-align: center;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #ffffff;
+    background-color: #5db05d;
   }
-  
-  .tracker {
-    display: flex;
-    justify-content: center;
-    padding: 1rem;
-    height: 100%;
+
+  & td {
+    padding: 0.75rem;
   }
-  
-  .workout {
-    font-size: 14px;
-    border-collapse: collapse;
-    width: 40rem;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  
-    & th {
-      padding: 1rem .75rem;
-      font-size: 1.3rem;
-      text-align: center;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #d9f5d9;
-      background-color: #a1f7a1;
-      text-shadow: -3px 5px 4px #84be84, 0 -2px 1px #fff;
-    }
-  
-    & td {
-      padding: 0.75rem;
-    }
+}
+
+.workout-entries,
+.workout-row {
+  background: #ffffff;
+}
+
+.workout-entries,
+.workout-row:nth-child(odd) {
+  background: #faf9f9;
+}
+
+.workout-activity,
+.workout-date,
+.workout-duration {
+  display: inline-block;
+  box-sizing: border-box;
+  color: #84be84;
+  font-size: 1rem;
+  height: 2.5rem;
+  padding: 0.5rem 0;
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+}
+
+.workout-duration {
+  width: 5rem;
+  text-align: right;
+}
+
+.duration-text {
+  color: #84be84;
+}
+
+.delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: none;
+  border-radius: 50%;
+  outline: none;
+  color: #dc281e;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-left: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 5px;
+  cursor: pointer;
+
+  &:hover {
+    background: #dc281e;
+    color: #ffffff;
   }
-  
-  .workout-entries,
-  .workout-row {
-    background: #ffffff;
-  }
-  
-  .workout-entries,
-  .workout-row:nth-child(odd) {
-    background: #faf9f9;
-  }
-  
-  .workout-activity,
-  .workout-date,
-  .workout-duration {
-    display: inline-block;
-    box-sizing: border-box;
-    color: #84be84;
-    font-size: 1rem;
-    height: 2.5rem;
-    padding: 0.5rem 0;
-    border: none;
-    outline: none;
-    background: none;
-    cursor: pointer;
-  }
-  
-  .workout-duration {
-    width: 5rem;
+}
+
+.add-row {
+  background: #ffffff !important;
+
+  & td {
     text-align: right;
   }
-  
-  .duration-text {
-    color: #84be84;
-  }
-  
-  .delete-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffffff;
-    border: none;
-    border-radius: 50%;
-    outline: none;
-    color: #dc281e;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-left: 0.5rem;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 5px;
+
+  .add-workout-btn {
+    display: inline-block;
+    padding: .5rem .8rem;
+    color: #ffffff;
+    background-color: #5db05d;
+    font-weight: 900;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 5px;
     cursor: pointer;
-  
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
+
     &:hover {
-      background: #dc281e;
-      color: #ffffff;
+      background: #ffffff;
+      color: #bbb0a1;
     }
   }
-  
-  .add-row {
-    background: #ffffff !important;
-  
-    & td {
-      text-align: right;
-    }
-  
-    .add-workout-btn {
-      display: inline-block;
-      padding: .5rem .8rem;
-      color: #dafcda;
-      background-color: #a1f7a1;
-      text-shadow: -3px 5px 5px #84be84, 0 -2px 1px #fff;
-      font-weight: 900;
-      font-size: 1.2rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      border-radius: 5px;
-      cursor: pointer;
-      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
-  
-      &:hover {
-        background: #ffffff;
-        color: #bbb0a1;
-      }
-    }
-  }
-  
+}
