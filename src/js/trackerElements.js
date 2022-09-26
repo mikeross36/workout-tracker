@@ -1,3 +1,5 @@
+"use strict"
+
 export const workoutTable = `
     <table class="workout">
         <thead>

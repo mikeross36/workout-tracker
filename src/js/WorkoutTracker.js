@@ -1,107 +1,114 @@
-import { workoutTable, workoutRow } from "./trackerElements";
+"use strict"
+import { qs } from "./utils";
+import { workoutTable, workoutRow } from "./trackerElements.js"
 
 class WorkoutTracker {
-    constructor(tracker){
-        this.tracker = tracker; 
-        this.tracker.insertAdjacentHTML("afterbegin", WorkoutTracker.workoutTable())
+    constructor(tracker) {
+        this.tracker = tracker;
+        this.setTable()
         this.workoutEntries = [];
-        this.getWorkoutEntries()
-        this.addBtn = this.tracker.querySelector(".add-workout-btn");
+        this.getEntriesDataFromStorage()
+        this.addBtn = this.setAddBtn()
+        this.clickAddBtn()
+        this.tableWorkoutEntries = this.setTableWorkoutEntries()
+        this.updateWorkoutTable()
+    }
 
+    static entriesKey = "workout-entries";
+
+    setEntriesDataToStorage() {
+        localStorage.setItem(WorkoutTracker.entriesKey, JSON.stringify(this.workoutEntries))
+    }
+
+    getEntriesDataFromStorage() {
+        this.workoutEntries = JSON.parse(localStorage.getItem(WorkoutTracker.entriesKey) || "[]")
+    }
+
+    setTable() {
+        this.tracker.insertAdjacentHTML("afterbegin", workoutTable)
+    }
+
+    setAddBtn() {
+        const addBtn = qs(this.tracker,".add-workout-btn")
+        if (addBtn) return addBtn;
+    }
+
+    clickAddBtn() {
         this.addBtn.addEventListener("click", () => {
-            const date = new Date()
+            const date = new Date();
             const year = date.getFullYear()
-            const month = (date.getMonth()+1).toString().padStart(2, "0")
+            const month = (date.getMonth() + 1).toString().padStart(2, "0")
             const day = date.getDay().toString().padStart(2, "0")
 
-            this.addWorkoutEntry({
+            this.addInititalWorkoutEntry({
                 date: `${year}/${month}/${day}`,
                 activity: "weight-lifting",
                 duration: 45
             })
         })
-        this.tableEntries = this.tracker.querySelector(".workout-entries")
+    }
+
+    addInititalWorkoutEntry(data) {
+        this.workoutEntries.push(data)
+        this.setEntriesDataToStorage()
         this.updateWorkoutTable()
     }
 
-    static workoutTable(){
-        return workoutTable;
-    };
-
-    static workoutRow(){
-        return workoutRow;
-    };
-
-    static entriesKey = "workoutEntries"
-
-    getWorkoutEntries(){
-        this.workoutEntries = JSON.parse(localStorage.getItem(WorkoutTracker.entriesKey) || "[]")
-    };
-
-    setWorkoutEntries(){
-        localStorage.setItem(WorkoutTracker.entriesKey, JSON.stringify(this.workoutEntries))
-    };
-
-    addWorkoutEntry(data){
-        this.workoutEntries.push(data)
-        this.setWorkoutEntries()
-        this.updateWorkoutTable()
-    };
-
-    updateWorkoutTable(){
-        const addWorkout = workoutData => {
+    setTableWorkoutEntries() {
+        const tableWorkoutEntries = qs(this.tracker,".workout-entries")
+        if (tableWorkoutEntries) return tableWorkoutEntries;
+    }
+    
+    updateWorkoutTable() {
+        const addWorkout = workoutEntryData => {
             const template = document.createElement("template")
             let workout = null;
-           
-            template.innerHTML = WorkoutTracker.workoutRow().trim()
+
+            template.innerHTML = workoutRow.trim()
             workout = template.content.firstElementChild;
-           
-            this.setInputValue(workout, workoutData);
-            this.updateWorkoutData(workout, workoutData);
-            this.tableEntries.appendChild(workout)
-        };
 
-        this.tableEntries.querySelectorAll(".workout-row").forEach(workout => {
-            workout.remove()
+            this.setInputValue(workout, workoutEntryData)
+            this.updateWorkoutData(workout, workoutEntryData)
+            this.tableWorkoutEntries.appendChild(workout)
+        }
+
+        this.tableWorkoutEntries.querySelectorAll(".workout-row").forEach(row => row.remove())
+        this.workoutEntries.forEach(entryData => addWorkout(entryData))
+    }
+
+    setInputValue(workout, workoutEntryData) {
+        qs(workout,".workout-date").value = workoutEntryData.date;
+        qs(workout,".workout-activity").value = workoutEntryData.activity;
+        qs(workout,".workout-duration").value = workoutEntryData.duration;
+    }
+
+    updateWorkoutData(workout, data) {
+        qs(workout, ".workout-date").addEventListener("change", ({ target }) => {
+            data.date = target.value;
+            this.setEntriesDataToStorage()
         })
-
-        this.workoutEntries.forEach(workoutEntry => {
-            addWorkout(workoutEntry)
+        
+        qs(workout, ".workout-activity").addEventListener("change", ({ target }) => {
+            data.activity = target.value;
+            this.setEntriesDataToStorage()
         })
-    };
-
-    setInputValue(workout, workoutData) {
-        workout.querySelector(".workout-date").value = workoutData.date;
-        workout.querySelector(".workout-activity").value = workoutData.activity;
-        workout.querySelector(".workout-duration").value = workoutData.duration;
-    };
-
-    updateWorkoutData(workout, workoutData) {
-        workout.querySelector(".workout-date").addEventListener("change", ({ target }) => {
-            workoutData.date = target.value; 
-            this.setWorkoutEntries();
-        });
-        workout.querySelector(".workout-activity").addEventListener("change", ({ target }) => {
-            workoutData.activity = target.value;
-            this.setWorkoutEntries();
-        });
-        workout.querySelector(".workout-duration").addEventListener("change", ({ target }) => {
-            workoutData.duration = target.value;
-            this.setWorkoutEntries();
-        });
-        workout.querySelector(".delete-btn").addEventListener("click", () => {
-            this.deleteWorkoutEntry(workoutData);
-        });
-    };
-
-    deleteWorkoutEntry(dataToDelete){
-        let copyEntries = this.workoutEntries.filter(data => {
-            return data !== dataToDelete;
+        
+        qs(workout, ".workout-duration").addEventListener("change", ({ target }) => {
+            data.duration = target.value;
+            this.setEntriesDataToStorage()
         })
-        this.workoutEntries = copyEntries;
-        this.setWorkoutEntries()
+        
+        qs(workout,".delete-btn").addEventListener("click", ()=> this.deleteWorkoutEntry(data))
+    }
+
+    deleteWorkoutEntry(dataToDelete) {
+        let copyOfEntries = this.workoutEntries.filter(entry => entry !== dataToDelete)
+        this.workoutEntries = copyOfEntries;
+        this.setEntriesDataToStorage()
         this.updateWorkoutTable()
-    };
+    }
 }
 
 export default WorkoutTracker;
+
+

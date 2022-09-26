@@ -43,7 +43,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: "Kanban Board",
+            title: "Workout Tracker",
             filename: "index.html",
             template: "src/template.html"
         })
